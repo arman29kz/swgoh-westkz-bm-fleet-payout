@@ -1,11 +1,18 @@
 // Init project
 const http = require('http');
 const express = require('express');
-const Discord = require("discord.js");
+const {Client, IntentsBitField, EmbedBuilder, Message } = require('discord.js');
 const fs = require("fs");
 
 const app = express();
-const client = new Discord.Client();
+const client = new Client({
+    intents: [
+        IntentsBitField.Flags.Guilds, // enter discord server
+        IntentsBitField.Flags.GuildMembers, // access to members of current discord server
+        IntentsBitField.Flags.GuildMessages, // listen to messages
+        IntentsBitField.Flags.MessageContent, // read to messages
+    ],
+});
 
 // Channel discord id 1 (squad arena)
 
@@ -38,10 +45,11 @@ client.on("ready", async () => {
     // Initial call
     await main();
 });
-client.login(process.env.botToken);
+client.log(process.env.botToken);
 
 console.log("App restarted");
 console.log(process.env.url);
+//const localhostUrl = process.env.LOCALHOST_URL;
 
 async function main() {
     if (!messageShard) {
